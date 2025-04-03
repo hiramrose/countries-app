@@ -1,4 +1,11 @@
-# PaisesApp
+# Countries App 
+
+A simple web app built with Angular that displays country information using the REST Countries API. Discover details about countries worldwide instantly!
+
+![image](https://github.com/user-attachments/assets/4ee3bdee-609c-409e-bd59-f781ef17d8e1)
+
+Visit here: https://countryspot.netlify.app/
+
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.5.
 
