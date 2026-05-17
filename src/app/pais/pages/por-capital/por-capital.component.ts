@@ -9,25 +9,28 @@ import { PaisService } from '../../services/pais.service';
 })
 export class PorCapitalComponent {
 
-  termino: string = "";
-  hayError: boolean = false;
+  termino  = '';
+  hayError = false;
+  cargando = false;
   paises: Country[] = [];
-  
+
   constructor(private paisService: PaisService) {}
 
   buscar(termino: string) {
-
     this.hayError = false;
-    console.log(this.termino);
-    this.termino = termino;
+    this.termino  = termino;
+    this.cargando = true;
 
-    this.paisService.buscarCapital(termino).subscribe(paises => {
-      this.paises = paises;
-      
-    }, (err) => {
-      this.hayError = true;
-      this.paises = [];
-    });
+    this.paisService.buscarCapital(termino).subscribe(
+      paises => { this.paises = paises; this.cargando = false; },
+      ()     => { this.hayError = true; this.paises = []; this.cargando = false; }
+    );
   }
 
+  limpiar() {
+    this.paises   = [];
+    this.hayError = false;
+    this.termino  = '';
+    this.cargando = false;
+  }
 }

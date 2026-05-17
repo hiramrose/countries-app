@@ -1,22 +1,45 @@
-<h2>Searches</h2>
-    <hr />
-    <ul class="list-group">
-      <li
-        routerLink=""
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="list-group-item"
-      >
-        Search Country
-      </li>
-      <li routerLink="region" routerLinkActive="active" class="list-group-item">
-        By Region
-      </li>
-      <li
-        routerLink="capital"
-        routerLinkActive="active"
-        class="list-group-item"
-      >
-        By capital
-      </li>
-    </ul>
+<nav class="navbar navbar-expand-md app-navbar bg-body">
+  <div class="container-lg">
+
+    <a class="navbar-brand fw-bold d-flex align-items-center gap-2" routerLink="/">
+      <span style="font-size: 1.4rem;">🌍</span>
+      <span>Countries</span>
+    </a>
+
+    <button
+      class="navbar-toggler border-0"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarContent"
+      aria-controls="navbarContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <li class="nav-item">
+          <a class="nav-link"
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >By Country</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/region" routerLinkActive="active">By Region</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/capital" routerLinkActive="active">By Capital</a>
+        </li>
+      </ul>
+
+      <button class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1" (click)="toggleDark()">
+        <i class="bi" [class.bi-moon-fill]="!isDark" [class.bi-sun-fill]="isDark"></i>
+        <span>{{ isDark ? 'Light' : 'Dark' }}</span>
+      </button>
+    </div>
+
+  </div>
+</nav>

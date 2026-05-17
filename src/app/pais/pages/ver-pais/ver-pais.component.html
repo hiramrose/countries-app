@@ -1,54 +1,134 @@
-<div *ngIf="!pais; else divPais" class="alert alert-info">
-  Wait, please...
+<!-- Skeleton while loading -->
+<div *ngIf="!pais; else divPais">
+  <div class="skeleton skeleton-hero mb-4"></div>
+
+  <div class="mb-3">
+    <div class="skeleton" style="height:32px; width:80px; border-radius:8px;"></div>
+  </div>
+
+  <div class="detail-card mb-4">
+    <div class="row g-4">
+      <div class="col-12 col-md-4">
+        <div class="skeleton skeleton-flag" style="height:200px; border-radius:8px;"></div>
+      </div>
+      <div class="col-12 col-md-8">
+        <div class="skeleton skeleton-h1 mb-2"></div>
+        <div class="skeleton skeleton-sub mb-4"></div>
+        <div class="skeleton skeleton-line mb-2"></div>
+        <div class="skeleton skeleton-line mb-2"></div>
+        <div class="skeleton skeleton-line mb-2"></div>
+        <div class="skeleton skeleton-line-sm"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
+<!-- Country detail -->
 <ng-template #divPais>
-  <div class="row">
-    <div class="col-12">
-      <h1>
-        Country: <small>{{ pais.name }}</small>
-      </h1>
+  <div class="animate__animated animate__fadeIn animate__faster">
+
+    <!-- Hero banner -->
+    <div class="country-hero mb-4">
+      <img [src]="pais.flags.png" class="hero-bg" alt="" aria-hidden="true" />
+      <div class="hero-gradient"></div>
+      <div class="hero-content">
+        <img [src]="pais.flags.png" class="hero-flag" [alt]="pais.flags.alt || pais.name.common" />
+        <div>
+          <h1 class="mb-0 fw-bold text-white">{{ pais.name.common }}</h1>
+          <p class="mb-0 text-white-50 small">{{ pais.name.official }}</p>
+        </div>
+      </div>
     </div>
+
+    <!-- Back button -->
+    <div class="mb-4">
+      <a routerLink="/" class="btn btn-sm btn-outline-secondary">
+        <i class="bi bi-arrow-left me-1"></i>Back
+      </a>
+    </div>
+
+    <!-- Main info card -->
+    <div class="detail-card mb-4">
+      <div class="row g-4">
+
+        <div class="col-12 col-sm-6">
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2"><strong>Region:</strong> {{ pais.region }}</li>
+            <li class="mb-2"><strong>Subregion:</strong> {{ pais.subregion || '—' }}</li>
+            <li class="mb-2"><strong>Capital:</strong> {{ pais.capital?.[0] || '—' }}</li>
+            <li class="mb-2"><strong>Population:</strong> {{ pais.population | number }}</li>
+          </ul>
+        </div>
+
+        <div class="col-12 col-sm-6">
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2"><strong>Area:</strong> {{ pais.area | number }} km²</li>
+            <li class="mb-2"><strong>Alpha-2:</strong> {{ pais.cca2 }}</li>
+            <li class="mb-2"><strong>Alpha-3:</strong> {{ pais.cca3 }}</li>
+            <li class="mb-2"><strong>Numeric:</strong> {{ pais.ccn3 || '—' }}</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Languages & Currencies -->
+    <div class="row g-4 mb-4">
+      <div class="col-12 col-md-6">
+        <div class="detail-card h-100">
+          <h6 class="fw-semibold mb-3"><i class="bi bi-translate me-2 text-primary"></i>Languages</h6>
+          <div *ngIf="pais.languages; else noData">
+            <span
+              *ngFor="let lang of pais.languages | keyvalue"
+              class="badge bg-primary me-1 mb-1 fs-6 fw-normal"
+            >{{ lang.value }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <div class="detail-card h-100">
+          <h6 class="fw-semibold mb-3"><i class="bi bi-currency-exchange me-2 text-success"></i>Currencies</h6>
+          <div *ngIf="pais.currencies; else noData">
+            <span
+              *ngFor="let cur of pais.currencies | keyvalue"
+              class="badge bg-success me-1 mb-1 fs-6 fw-normal"
+              [title]="cur.key"
+            >{{ cur.value.name }} ({{ cur.value.symbol }})</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Border countries -->
+    <div class="detail-card mb-4" *ngIf="pais.borders && pais.borders.length > 0">
+      <h6 class="fw-semibold mb-3"><i class="bi bi-map me-2 text-secondary"></i>Border Countries</h6>
+      <a
+        *ngFor="let border of pais.borders"
+        [routerLink]="['/country', border]"
+        class="btn btn-sm btn-outline-secondary me-1 mb-1"
+      >{{ border }}</a>
+    </div>
+
+    <!-- Translations -->
+    <div class="detail-card">
+      <h6 class="fw-semibold mb-3"><i class="bi bi-globe me-2 text-info"></i>Translations</h6>
+      <div class="d-flex flex-wrap gap-2">
+        <span *ngIf="pais.translations['deu']" class="badge bg-secondary fw-normal fs-6">🇩🇪 {{ pais.translations['deu'].common }}</span>
+        <span *ngIf="pais.translations['fra']" class="badge bg-secondary fw-normal fs-6">🇫🇷 {{ pais.translations['fra'].common }}</span>
+        <span *ngIf="pais.translations['jpn']" class="badge bg-secondary fw-normal fs-6">🇯🇵 {{ pais.translations['jpn'].common }}</span>
+        <span *ngIf="pais.translations['ita']" class="badge bg-secondary fw-normal fs-6">🇮🇹 {{ pais.translations['ita'].common }}</span>
+        <span *ngIf="pais.translations['por']" class="badge bg-secondary fw-normal fs-6">🇵🇹 {{ pais.translations['por'].common }}</span>
+        <span *ngIf="pais.translations['nld']" class="badge bg-secondary fw-normal fs-6">🇳🇱 {{ pais.translations['nld'].common }}</span>
+        <span *ngIf="pais.translations['hrv']" class="badge bg-secondary fw-normal fs-6">🇭🇷 {{ pais.translations['hrv'].common }}</span>
+        <span *ngIf="pais.translations['per']" class="badge bg-secondary fw-normal fs-6">🇮🇷 {{ pais.translations['per'].common }}</span>
+        <span *ngIf="pais.translations['ara']" class="badge bg-secondary fw-normal fs-6">🇸🇦 {{ pais.translations['ara'].common }}</span>
+        <span *ngIf="pais.translations['spa']" class="badge bg-secondary fw-normal fs-6">🇪🇸 {{ pais.translations['spa'].common }}</span>
+        <span *ngIf="pais.translations['zho']" class="badge bg-secondary fw-normal fs-6">🇨🇳 {{ pais.translations['zho'].common }}</span>
+      </div>
+    </div>
+
   </div>
-
-  <div class="row">
-    <div class="col-4">
-      <h3>Flag</h3>
-      <img [src]="pais.flags.png" class="img-thumbnail"/>
-    </div>
-
-    <div class="col">
-      <h3>Information</h3>
-      <ul class="list-group">
-        <li class="list-group-item">
-          <strong>Population:</strong> {{ pais.population | number }}
-        </li>
-        <li class="list-group-item">
-          <strong>Numeric Code:</strong> {{ pais.numericCode }}
-        </li>
-        <li class="list-group-item">
-          <strong>Alpha Code:</strong> {{ pais.alpha3Code }}
-        </li>
-      </ul>
-    </div>
-  </div>
-
-  <h3>Translations</h3>
-  <div class="row">
-    <div class="col">
-      <span class="badge bg-primary mr-1">{{ pais.translations.de }}</span>
-      <span class="badge bg-primary mr-1">{{ pais.translations.fr }}</span>
-      <span class="badge bg-primary mr-1">{{ pais.translations.ja }}</span>
-      <span class="badge bg-primary mr-1">{{ pais.translations.it }}</span>
-      <span class="badge bg-primary mr-1">{{ pais.translations.br }}</span>
-      <span class="badge bg-primary mr-1">{{ pais.translations.pt }}</span>
-      <span class="badge bg-primary mr-1">{{ pais.translations.nl }}</span>
-      <span class="badge bg-primary mr-1">{{ pais.translations.hr }}</span>
-      <span class="badge bg-primary mr-1">{{ pais.translations.fa }}</span>
-    </div>
-  </div>
-
-  <pre class="mt-5">
-    {{ pais | json }}
-  </pre>
 </ng-template>
+
+<ng-template #noData><span class="text-muted small">—</span></ng-template>

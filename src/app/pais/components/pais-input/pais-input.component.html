@@ -1,10 +1,16 @@
 <form (ngSubmit)="buscar()" autocomplete="off">
+  <div class="position-relative search-wrapper">
     <input
       type="text"
       name="termino"
-      class="form-control"
+      class="form-control search-input"
       [(ngModel)]="termino"
       (input)="teclaPresionada()"
       [placeholder]="placeholder"
     />
-  </form>
+    <button *ngIf="termino" type="button" class="search-clear-btn" (click)="limpiar()" title="Clear">
+      <i class="bi bi-x-circle-fill"></i>
+    </button>
+    <i *ngIf="!termino" class="bi bi-search search-icon-right"></i>
+  </div>
+</form>

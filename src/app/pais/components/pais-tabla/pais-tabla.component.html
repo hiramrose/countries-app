@@ -1,26 +1,21 @@
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th> # </th>
-            <th> Flag </th>
-            <th> Name </th>
-            <th> Population </th>
-            <th></th>
-        </tr>
-
-    </thead>
-
-    <tbody>
-        <tr *ngFor="let pais of paises; let i = index" class="animate__animated animate__fadeIn animate__faster">
-            <td> {{ i + 1 }} </td>
-            <td>
-              <img class="small-flag" [src]="pais.flag">
-            </td>
-            <td> {{ pais.capital }}, {{ pais.name }} </td>
-            <td> {{  pais.population | number }} </td>
-            <td>
-              <a [routerLink]="['/country',pais.alpha2Code]" routerLinkActive="router-link-active" >See more...</a>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+  <div class="col" *ngFor="let pais of paises">
+    <div class="card country-card animate__animated animate__fadeIn animate__faster">
+      <img
+        class="flag-img"
+        [src]="pais.flags.png"
+        [alt]="pais.flags.alt || pais.name.common"
+      />
+      <div class="card-body d-flex flex-column">
+        <h6 class="card-title fw-semibold">{{ pais.name.common }}</h6>
+        <p><strong>Capital:</strong> {{ pais.capital?.[0] || '—' }}</p>
+        <p><strong>Region:</strong> {{ pais.region }}</p>
+        <p><strong>Population:</strong> {{ pais.population | number }}</p>
+        <a
+          [routerLink]="['/country', pais.cca2]"
+          class="btn btn-sm btn-outline-primary mt-auto stretched-link"
+        >See more</a>
+      </div>
+    </div>
+  </div>
+</div>

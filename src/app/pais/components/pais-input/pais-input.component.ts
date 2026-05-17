@@ -8,20 +8,17 @@ import { debounceTime } from 'rxjs/operators';
   styleUrls: ['./pais-input.component.css'],
 })
 export class PaisInputComponent implements OnInit {
-  @Output() onEnter: EventEmitter<string> = new EventEmitter();
-  @Output() onDebounce: EventEmitter<string> = new EventEmitter();
+  @Output() onEnter    = new EventEmitter<string>();
+  @Output() onDebounce = new EventEmitter<string>();
+  @Output() onClear    = new EventEmitter<void>();
 
   @Input() placeholder: string = '';
 
-  debouncer: Subject<string> = new Subject();
-
-  termino: string = '';
+  debouncer = new Subject<string>();
+  termino   = '';
 
   ngOnInit() {
-    this.debouncer.pipe(debounceTime(300)).subscribe((valor) => {
-      this.onDebounce.emit(valor);
-      console.log('debouncer:', valor);
-    });
+    this.debouncer.pipe(debounceTime(300)).subscribe(valor => this.onDebounce.emit(valor));
   }
 
   buscar() {
@@ -30,5 +27,10 @@ export class PaisInputComponent implements OnInit {
 
   teclaPresionada() {
     this.debouncer.next(this.termino);
+  }
+
+  limpiar() {
+    this.termino = '';
+    this.onClear.emit();
   }
 }
