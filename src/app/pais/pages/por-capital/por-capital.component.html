@@ -1,22 +1,40 @@
 <div class="animate__animated animate__fadeIn animate__faster">
-  <h2>By Capital</h2>
-<hr />
+  <h2 class="mb-4">By Capital</h2>
 
-<div class="row">
-  <div class="col">
-    <app-pais-input (onEnter)="buscar($event)" placeholder="Search capital..."></app-pais-input>
+  <div class="row mb-4">
+    <div class="col-12 col-md-8 col-lg-6">
+      <app-pais-input
+        (onEnter)="buscar($event)"
+        (onClear)="limpiar()"
+        placeholder="Search capital..."
+      ></app-pais-input>
+    </div>
   </div>
 </div>
 
-<hr />
+<!-- Error -->
+<div *ngIf="hayError" class="alert alert-danger d-flex align-items-center gap-2 mb-4">
+  <i class="bi bi-exclamation-circle-fill"></i>
+  No results found for "{{ termino }}"
 </div>
 
-<div  *ngIf="hayError" class="alert alert-danger">
-    Nothing was found for the term {{ termino }}
-</div>
-
-<div  *ngIf="paises.length > 0" class="row">
-    <div class="col">
-       <app-pais-tabla [paises]="paises"></app-pais-tabla>
+<!-- Skeleton cards -->
+<div *ngIf="cargando" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+  <div class="col" *ngFor="let i of [1,2,3,4,5,6,7,8]">
+    <div class="card country-card border-0">
+      <div class="skeleton skeleton-flag"></div>
+      <div class="card-body">
+        <div class="skeleton skeleton-title"></div>
+        <div class="skeleton skeleton-line"></div>
+        <div class="skeleton skeleton-line"></div>
+        <div class="skeleton skeleton-line-sm"></div>
+        <div class="skeleton skeleton-btn"></div>
+      </div>
     </div>
+  </div>
+</div>
+
+<!-- Results -->
+<div *ngIf="!cargando && paises.length > 0">
+  <app-pais-tabla [paises]="paises"></app-pais-tabla>
 </div>

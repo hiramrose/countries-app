@@ -1,43 +1,59 @@
 <div class="animate__animated animate__fadeIn animate__faster">
-  <h2>By Country</h2>
-  <hr />
+  <h2 class="mb-4">By Country</h2>
 
-  <div class="row">
-    <div class="col">
+  <div class="row mb-3">
+    <div class="col-12 col-md-8 col-lg-6">
       <app-pais-input
         (onEnter)="buscar($event)"
         (onDebounce)="sugerencias($event)"
+        (onClear)="limpiarBusqueda()"
         placeholder="Search country..."
       ></app-pais-input>
     </div>
   </div>
 
-  <ul *ngIf="mostrarSugerencias" class="list-group">
-    <li
-      *ngFor="let pais of paisesSugeridos"
-      class="list-group-item list-group-item-action"
-    >
-      <a class="nav-link" [routerLink]="['/country', pais.cca2]">{{
-        pais.name.common
-      }}</a>
-    </li>
-    <li
-      class="list-group-item list-group-item-action"
-      (click)="buscarSugerido(termino)"
-    >
-      <a class="nav-link">Go for "{{ termino }}"</a>
-    </li>
-  </ul>
-
-  <hr />
-</div>
-
-<div *ngIf="hayError" class="alert alert-danger">
-  Nothing was found for the term "{{ termino }}"
-</div>
-
-<div *ngIf="paises.length > 0" class="row">
-  <div class="col">
-    <app-pais-tabla [paises]="paises"></app-pais-tabla>
+  <!-- Suggestions -->
+  <div *ngIf="mostrarSugerencias" class="col-12 col-md-8 col-lg-6 mb-3">
+    <ul class="list-group suggestions-list">
+      <li
+        *ngFor="let pais of paisesSugeridos"
+        class="list-group-item list-group-item-action"
+      >
+        <a class="nav-link d-flex align-items-center gap-2" [routerLink]="['/country', pais.cca2]">
+          <img [src]="pais.flags.png" style="width:22px; height:14px; object-fit:cover; border-radius:2px;" alt="" />
+          {{ pais.name.common }}
+        </a>
+      </li>
+      <li class="list-group-item list-group-item-action text-muted" (click)="buscarSugerido(termino)">
+        <i class="bi bi-search me-2"></i>Go for "{{ termino }}"
+      </li>
+    </ul>
   </div>
+</div>
+
+<!-- Error -->
+<div *ngIf="hayError" class="alert alert-danger d-flex align-items-center gap-2 mb-4">
+  <i class="bi bi-exclamation-circle-fill"></i>
+  No results found for "{{ termino }}"
+</div>
+
+<!-- Skeleton cards -->
+<div *ngIf="cargando" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+  <div class="col" *ngFor="let i of [1,2,3,4,5,6,7,8]">
+    <div class="card country-card border-0">
+      <div class="skeleton skeleton-flag"></div>
+      <div class="card-body">
+        <div class="skeleton skeleton-title"></div>
+        <div class="skeleton skeleton-line"></div>
+        <div class="skeleton skeleton-line"></div>
+        <div class="skeleton skeleton-line-sm"></div>
+        <div class="skeleton skeleton-btn"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Results -->
+<div *ngIf="!cargando && paises.length > 0">
+  <app-pais-tabla [paises]="paises"></app-pais-tabla>
 </div>
