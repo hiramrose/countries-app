@@ -2,7 +2,8 @@
 
 A simple web app built with Angular that displays country information using the REST Countries API. Discover details about countries worldwide instantly!
 
-![image](https://github.com/user-attachments/assets/4ee3bdee-609c-409e-bd59-f781ef17d8e1)
+![image](<img width="2203" height="1137" alt="image" src="https://github.com/user-attachments/assets/ab55205c-1cc8-4342-91a7-8ffd35946c3f" />
+)
 
 Visit here: https://countryspot.netlify.app/
 
